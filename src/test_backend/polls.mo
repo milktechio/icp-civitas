@@ -32,7 +32,8 @@ class PollOps(polls : SB.StableBuffer<Poll>){
         return true;
     };
 
-   public func addVoteFor(idPoll : Nat, idOption: Nat, amountVotes : Nat) : Bool {
+    //Añadir votos a una opcion especifica de una votacion
+    public func addVoteFor(idPoll : Nat, idOption: Nat, amountVotes : Nat) : Bool {
         let testPoll = SB.getOpt(polls, idPoll);
         switch (testPoll) {
             case (?poll) {
@@ -52,6 +53,7 @@ class PollOps(polls : SB.StableBuffer<Poll>){
             }
         }
     };
+
 
     //Devuelve todas las opciones de la votacion
     public func getAllPollsName() : [Text] {
