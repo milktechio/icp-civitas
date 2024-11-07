@@ -60,10 +60,10 @@ actor Main {
    /**********************OWNER****************************/
    // Agrega un conjunto de opciones a una votación
    public shared (msg) func addOptionToPoll(voteName : Text, optionNames : [Text]) : async Bool {
-      if (msg.caller == owner) {
+      //if (msg.caller == owner) {
          return pollOps.createPoll(voteName, optionNames);
-      };
-      return false;
+      //};
+      //return false;
    };
 
    public shared (msg) func airDrop(amount : Nat) : async Bool {
