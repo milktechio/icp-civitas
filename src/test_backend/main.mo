@@ -61,7 +61,7 @@ actor Main {
    // Agrega un conjunto de opciones a una votación
    public shared (msg) func addOptionToPoll(voteName : Text, optionNames : [Text]) : async Bool {
       if (msg.caller == owner) {
-         return pollOps.addOptions(voteName, optionNames);
+         return pollOps.createPoll(voteName, optionNames);
       };
       return false;
    };

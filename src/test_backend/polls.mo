@@ -17,7 +17,7 @@ type Option = {
 
 class PollOps(polls : SB.StableBuffer<Poll>){
     // Agrega opciones a la votación
-    public func addOptions(voteName: Text, optionNames: [Text]) : Bool {
+    public func createPoll(voteName: Text, optionNames: [Text]) : Bool {
         var _options : [Option] = [];
         for (i in optionNames.keys()){
             _options:= Array.append<Option>(_options, [{id = Array.size(_options);name = optionNames[i]}]);
