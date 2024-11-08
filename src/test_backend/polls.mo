@@ -6,7 +6,7 @@ import SB "libs/StableBuffer";
 
 type Poll = {
         id : Nat;
-        name : Text;
+        var name : Text;
         var options : [Option];
         var votes : [var Nat];
 };
@@ -38,12 +38,98 @@ class PollOps(polls : SB.StableBuffer<Poll>){
         };
         let new_poll : Poll = {
             id = SB.size(polls); 
-            name = pollName; 
+            var name = pollName; 
             var options = _options;
             var votes = Array.init<Nat>(Array.size(optionNames), 0)
             };
         SB.add(polls, new_poll);
         return makePollShare(new_poll,"Ok");
+    };
+
+    public func removePoll(id : Nat) : SharedPoll{
+        let poll = SB.getOpt(polls,id);
+        switch(poll){
+            case(?poll){
+                return makePollShare( SB.remove(polls,id),"Ok");
+            };
+            case (null){
+                return {
+                    id = 100000;
+                    name = "--";
+                    options = [];
+                    votes = [];
+                    status = "Error: Poll no existe";
+                }; 
+            };
+        };
+    };
+
+    public func renamePoll(id: Nat, new_Name : Text) : SharedPoll{
+        let poll = SB.getOpt(polls,id);
+        switch(poll){
+            case(?poll){
+                poll.name := new_Name;
+                SB.put(polls,id,poll);
+                return makePollShare(poll,"Ok");
+            };
+            case (null){
+                return {
+                    id = 100000;
+                    name = "--";
+                    options = [];
+                    votes = [];
+                    status = "Error: Poll no existe";
+                }; 
+            };
+        };
+    };
+
+   public func addOptionToPoll(id: Nat,new_option : Text) : SharedPoll{
+        let poll = SB.getOpt(polls,id);
+        switch(poll){
+            case(?poll){
+                poll.options := Array.append<Option>(poll.options, [{id = Array.size(poll.options);name = new_option}]);
+                let newArray = Array.init<Nat>(Array.size(poll.options), 0);
+                var i = 0;
+                while (i < poll.options.size()-1) {
+                  newArray[i] := poll.votes[i];
+                  i += 1;
+                };
+                newArray[poll.options.size()] := 0;
+                SB.put(polls,id,poll);
+                return makePollShare(poll,"Ok");
+            };
+            case (null){
+                return {
+                    id = 100000;
+                    name = "--";
+                    options = [];
+                    votes = [];
+                    status = "Error: Poll no existe";
+                }; 
+            };
+        };
+    }; 
+
+    public func removeOptionToPoll(id: Nat, idOption : Nat) : SharedPoll{
+        let poll = SB.getOpt(polls,id);
+        switch(poll){
+            case(?poll){
+                poll.options := removeElement(poll.options,idOption);
+                removeElementMut(poll.votes,idOption);
+                SB.put(polls,id,poll);
+                return makePollShare(poll,"Ok");
+            };
+            case (null){
+                return {
+                    id = 100000;
+                    name = "--";
+                    options = [];
+                    votes = [];
+                    status = "Error: Poll no existe";
+                }; 
+            };
+        };
     };
 
    public func addVoteFor(idPoll : Nat, idOption: Nat, amountVotes : Nat) : SharedPoll {
@@ -54,6 +140,7 @@ class PollOps(polls : SB.StableBuffer<Poll>){
                 switch(testOption){
                     case(?_){
                         poll.votes[idOption]+=amountVotes;
+                        SB.put(polls,idPoll,poll);
                         return makePollShare(poll,"Ok");
                     };
                     case(null){
@@ -99,4 +186,19 @@ class PollOps(polls : SB.StableBuffer<Poll>){
         };
         return sharedpoll;
     };
+    private func removeElement<T>(arr: [T], index: Nat): [T] {
+    Array.tabulate<T>(arr.size() - 1, func (i) {
+        if (i < index) { arr[i] } else { arr[i + 1] }
+    })
+    };
+
+    private func removeElementMut(arr: [var Nat], index: Nat) {
+        if (index >= arr.size()) return;
+        var i = index;
+        while (i < arr.size() - 1) {
+            arr[i] := arr[i + 1];
+            i += 1;
+        };
+        arr[arr.size() - 1] := 0;
+}
 };

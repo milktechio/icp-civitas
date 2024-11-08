@@ -74,7 +74,7 @@ actor Main {
 
    /**********************OWNER****************************/
    // Agrega un conjunto de opciones a una votación
-   public shared (msg) func addOptionToPoll(voteName : Text, optionNames : [Text]) : async Polls.SharedPoll {
+   public shared (msg) func createPoll(voteName : Text, optionNames : [Text]) : async Polls.SharedPoll {
       if (msg.caller == owner) {
          return pollOps.createPoll(voteName, optionNames);
       };
@@ -99,5 +99,33 @@ actor Main {
       };
       return null;
    };
+
+   public shared (msg) func removePoll(id : Nat) : async ?Polls.SharedPoll{
+      if(msg.caller == owner){
+         return ?pollOps.removePoll(id);
+      };
+      return null;
+   };
+
+    public shared (msg) func renamePoll(id : Nat, new_name : Text) : async ?Polls.SharedPoll{
+      if(msg.caller == owner){
+         return ?pollOps.renamePoll(id,new_name);
+      };
+      return null;
+   };
+
+   public shared (msg) func addOptiontoPoll(id : Nat, new_option : Text) : async ?Polls.SharedPoll{
+     if(msg.caller == owner){
+         return ?pollOps.addOptionToPoll(id,new_option);
+      };
+      return null; 
+   };
+
+   public shared (msg) func removeOptionToPoll(id : Nat, id_remove : Nat) : async ?Polls.SharedPoll{
+      if(msg.caller == owner){
+         return ?pollOps.removeOptionToPoll(id,id_remove);
+      };
+      return null;  
+   }
    
 };
