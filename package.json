@@ -14,5 +14,8 @@
   "type": "module",
   "workspaces": [
     "src/test_frontend"
-  ]
+  ],
+  "dependencies": {
+    "@dfinity/agent": "^2.1.3"
+  }
 }
