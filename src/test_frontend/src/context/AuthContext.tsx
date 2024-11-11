@@ -1,5 +1,5 @@
 import { AuthClient } from "@dfinity/auth-client";
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -31,6 +31,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await authClient.logout();
     setIsAuthenticated(false);
   };
+
+  const authClientInit = async () => {
+    const authClient = await AuthClient.create();
+    const identity = await authClient.getIdentity();
+    const principal = await identity.getPrincipal();
+
+    console.log(authClient);
+
+    if (!principal.isAnonymous()) {
+      setIsAuthenticated(true);
+    }
+  };
+
+  useEffect(() => {
+    authClientInit();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
