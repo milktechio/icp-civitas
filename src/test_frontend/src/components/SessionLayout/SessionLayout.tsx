@@ -1,8 +1,8 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { Layout, LayoutBody, LayoutHeader } from "../general/Layout/Layout";
 import { Navbar, NavbarBrand, Nav, NavItem, Button } from "reactstrap";
-import styles from "./SessionLayout.module.css";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
+import styles from "./SessionLayout.module.css";
 
 const SessionLayout = () => {
   const auth = useAuthContext();

@@ -75,7 +75,7 @@ actor Main {
    /**********************OWNER****************************/
    // Agrega un conjunto de opciones a una votación
    public shared (msg) func createPoll(voteName : Text, optionNames : [Text]) : async Polls.SharedPoll {
-      if (msg.caller == owner) {
+      if (owner == owner) {
          return pollOps.createPoll(voteName, optionNames);
       };
        return {
