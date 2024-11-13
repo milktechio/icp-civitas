@@ -9,6 +9,7 @@ type Poll = {
         var name : Text;
         var options : [Option];
         var votes : [var Nat];
+        var voters: [Text];
 };
 
 type Option = {
@@ -40,7 +41,8 @@ class PollOps(polls : SB.StableBuffer<Poll>){
             id = SB.size(polls); 
             var name = pollName; 
             var options = _options;
-            var votes = Array.init<Nat>(Array.size(optionNames), 0)
+            var votes = Array.init<Nat>(Array.size(optionNames), 0);
+            var voters = [];
             };
         SB.add(polls, new_poll);
         return makePollShare(new_poll,"Ok");
@@ -132,19 +134,26 @@ class PollOps(polls : SB.StableBuffer<Poll>){
         };
     };
 
-   public func addVoteFor(idPoll : Nat, idOption: Nat, amountVotes : Nat) : SharedPoll {
+    //Funcion para añadir un voto unico por usuario a una votacion
+    public func addVoteFor(idPoll: Nat, idOption: Nat, voterId: Text): SharedPoll {
         let testPoll = SB.getOpt(polls, idPoll);
         switch (testPoll) {
             case (?poll) {
-                let testOption = Array.find<Option>(poll.options,func (x) = x.id == idOption);
-                switch(testOption){
-                    case(?_){
-                        poll.votes[idOption]+=amountVotes;
-                        SB.put(polls,idPoll,poll);
-                        return makePollShare(poll,"Ok");
+                // Verifica si el usuario ya voto
+                if (hasVoted(poll.voters, voterId)) {
+                    return makePollShare(poll, "Error: Ya has votado en esta encuesta");
+                };
+
+                let testOption = Array.find<Option>(poll.options, func(x) = x.id == idOption);
+                switch (testOption) {
+                    case (?_) {
+                        poll.votes[idOption] += 1;
+                        poll.voters := Array.append<Text>(poll.voters, [voterId]);
+                        SB.put(polls, idPoll, poll);
+                        return makePollShare(poll, "Ok");
                     };
-                    case(null){
-                        return makePollShare(poll,"Error: Opcion no existe");
+                    case (null) {
+                        return makePollShare(poll, "Error: Opción no existe");
                     };
                 };
             };
@@ -154,9 +163,17 @@ class PollOps(polls : SB.StableBuffer<Poll>){
                     name = "--";
                     options = [];
                     votes = [];
-                    status = "Error: Poll no existe";
+                    status = "Error: Encuesta no existe";
                 };
             }
+        }
+    };
+
+    //Funcion para verificar si el usuario ya ha votado
+    private func hasVoted(voters: [Text], voterId: Text): Bool {
+        switch (Array.find<Text>(voters, func(x) = x == voterId)) {
+            case (?_) { true };
+            case (null) { false };
         }
     };
 

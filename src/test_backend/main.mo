@@ -6,25 +6,20 @@ import Blob "mo:base/Blob";
 import Poll "polls";
 import Whitelist "whitelist";
 import User "User";
-import Airdrop "Airdrop";
 import Polls "polls";
 actor Main {
    /*****TODO LO STABLE VA ACA*******/
    stable let whitelist = SHM.init<Principal,User.User>();
    stable let polls = SB.init<Poll.Poll>();
-   stable var tokens_amount : Nat = 100000;
 
    let owner : Principal = Principal.fromText("otpyl-647cy-xr3ji-3bjmd-zs5h3-iu4so-jfu4b-cbjtl-bipcl-xdu7h-2ae");
   
    let whitelistOps = Whitelist.Whitelist(whitelist);
    let pollOps = Poll.PollOps(polls);
-   let userOps = User.UserOps();
-   let airdrop = Airdrop.Airdrop(userOps);
 
    public query func say(phrase : Text) : async Text {
       return phrase;
    };
-
 
    //Obtinene usuario por id
    public query func getUserBy(id : Text) : async User.SharedUser {
@@ -53,23 +48,9 @@ actor Main {
       return whitelistOps.deleteUser(msg.caller);
    };
 
-   //resgtra n votos por id opcion (el usuario no se guarda, voto sera anonimo)
-   public shared (msg) func registerVote(idPoll : Nat, idOpt : Nat, amount : Nat) : async Polls.SharedPoll{
-      switch (whitelistOps.getUser(msg.caller)) {
-         case (?user) {
-            userOps.removeBalance(user,amount);
-            return pollOps.addVoteFor(idPoll, idOpt, amount);
-         };
-         case (null) {
-            return {
-               id = 100000;
-               name = "--";
-              options = [];
-              votes = [];
-              status = "Usuario no existe";
-            };
-         };
-      };
+   //resgtra 1 voto por id opcion, ahora el voto no es anonimo
+   public shared (msg) func addVoteToPoll(idPoll : Nat, idOption : Nat, idUser: Text) : async Polls.SharedPoll{
+      return pollOps.addVoteFor(idPoll,idOption,idUser);
    };
 
    /**********************OWNER****************************/
@@ -85,19 +66,6 @@ actor Main {
          votes = [];
          status = "Error: NO TIENES PERMISO";
       };
-   };
-
-   public shared (msg) func airDrop(amount : Nat) : async ?Whitelist.SharedWhiteList {
-      if (msg.caller == owner) {
-         let (res_tokens, success) = airdrop.airDrop(tokens_amount, amount, whitelistOps.getWhiteList());
-         tokens_amount := res_tokens;
-         if(success){
-            return ?whitelistOps.getAllUsers();
-         }else{
-            return null
-         }
-      };
-      return null;
    };
 
    public shared (msg) func removePoll(id : Nat) : async ?Polls.SharedPoll{

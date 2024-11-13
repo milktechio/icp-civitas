@@ -40,7 +40,6 @@ class Whitelist(whitelist : SHM.StableHashMap<Principal, User.User>) {
             case(null){
                 return {
                     id = Principal.fromText("aaaaa-aa");
-                    balance = 0;
                     status = "Error: Usuario no existe";
                 };
             };
@@ -57,7 +56,6 @@ class Whitelist(whitelist : SHM.StableHashMap<Principal, User.User>) {
             case(null){
                 return {
                     id = Principal.fromText("aaaaa-aa");
-                    balance = 0;
                     status = "Error: Usuario no existe";
                 };
             };
@@ -110,8 +108,6 @@ class Whitelist(whitelist : SHM.StableHashMap<Principal, User.User>) {
     private func makeSharedUser(user: User.User, status : Text) : User.SharedUser{
         let sharedUser : User.SharedUser = {
             id = user.id;
-            balance = user.balance;
-            status = status;
         };
         return sharedUser;
     } 

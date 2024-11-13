@@ -35,14 +35,14 @@ const VotingHome = () => {
     }
   };
 
-  const registerVote = async (
-    idPoll: bigint,
-    idOpt: bigint,
-    amount: bigint
-  ) => {
-    const vote = await backend.registerVote(idPoll, idOpt, amount);
-    console.log(vote);
-  };
+  // const registerVote = async (
+  //   idPoll: bigint,
+  //   idOpt: bigint,
+  //   amount: bigint
+  // ) => {
+  //   const vote = await backend.registerVote(idPoll, idOpt, amount);
+  //   console.log(vote);
+  // };
 
   useEffect(() => {
     fetchVotaciones();
@@ -68,7 +68,7 @@ const VotingHome = () => {
                   <li key={index}>
                     <Button
                       className="mb-2"
-                      onClick={() => registerVote(votacion?.id, option?.id, 1n)}
+                      // onClick={() => registerVote(votacion?.id, option?.id, 1n)}
                     >
                       {option?.name}
                     </Button>
