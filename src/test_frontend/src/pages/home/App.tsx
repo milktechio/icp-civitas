@@ -1,16 +1,32 @@
+import { useNavigate } from "react-router-dom";
+import LoginLayOut from "../../components/LoginLayOut/LoginLayOut";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
-import Login from "../../views/Login/Login";
-import Voting from "../voting/Voting";
+import { useEffect } from "react";
 
-function App() {
+const Login = () => {
   const auth = useAuthContext();
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    await auth.login();
+  };
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigate("/admin/home");
+    }
+  }, [auth.isAuthenticated]);
 
   return (
-    <>
-      <Login />
-      <Voting />
-    </>
+    <LoginLayOut>
+      <LoginLayOut.SideBarComponent>
+        <button onClick={handleLogin} className="button">
+          Login
+        </button>
+      </LoginLayOut.SideBarComponent>
+    </LoginLayOut>
   );
-}
+};
 
-export default App;
+export default Login;
+6;

@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useState } from "react";
 
 type AuthContextType = {
   isAuthenticated: boolean;
+  loading: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -13,8 +14,11 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const login = async () => {
+    setLoading(true);
+
     const authClient = await AuthClient.create();
     authClient.login({
       // 7 days in nanoseconds
@@ -23,7 +27,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsAuthenticated(true);
       },
     });
-    setIsAuthenticated(true);
+
+    setLoading(false);
   };
 
   const logout = async () => {
@@ -37,8 +42,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const identity = await authClient.getIdentity();
     const principal = await identity.getPrincipal();
 
-    console.log(authClient);
-
     if (!principal.isAnonymous()) {
       setIsAuthenticated(true);
     }
@@ -49,7 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

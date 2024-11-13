@@ -1,0 +1,13 @@
+.NavBrand {
+  color: white;
+}
+
+.Nav {
+  gap: 15px;
+}
+
+.NavButton {
+  opacity: 0.8;
+  border: #ff647d 1px solid;
+  background-color: #ff647d;
+}
