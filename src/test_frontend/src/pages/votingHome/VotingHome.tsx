@@ -35,21 +35,21 @@ const VotingHome = () => {
     }
   };
 
-  // const registerVote = async (
-  //   idPoll: bigint,
-  //   idOpt: bigint,
-  //   amount: bigint
-  // ) => {
-  //   const vote = await backend.registerVote(idPoll, idOpt, amount);
-  //   console.log(vote);
-  // };
+  const registerVote = async (
+    idPoll: bigint,
+    idOpt: bigint,
+    idVoter: string
+  ) => {
+    const vote = await backend.addVoteToPoll(idPoll, idOpt, idVoter);
+    console.log(vote);
+  };
 
   useEffect(() => {
     fetchVotaciones();
-  }, []);
+  }, [votaciones?.length]);
 
   return (
-    <Container>
+    <div style={{ height: "100%", width: "80%" }}>
       <h2>Lista de Votaciones</h2>
       {loading ? (
         <Spinner color="primary" />
@@ -68,10 +68,13 @@ const VotingHome = () => {
                   <li key={index}>
                     <Button
                       className="mb-2"
-                      // onClick={() => registerVote(votacion?.id, option?.id, 1n)}
+                      onClick={() =>
+                        registerVote(votacion?.id, option?.id, "algun texto")
+                      }
                     >
                       {option?.name}
                     </Button>
+                    <div>{String(votacion?.votes[index])}</div>
                   </li>
                 ))}
               </ul>
@@ -79,7 +82,7 @@ const VotingHome = () => {
           ))}
         </ListGroup>
       )}
-    </Container>
+    </div>
   );
 };
 

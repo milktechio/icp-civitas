@@ -1,9 +1,7 @@
 import {
   Button,
-  Container,
   Form,
   FormGroup,
-  FormText,
   Input,
   Label,
   ListGroup,
@@ -29,15 +27,15 @@ const NewVoting = () => {
   // Función para agregar una opción a la lista de opciones
   const addOption = () => {
     if (currenOption.trim()) {
-      setOptions([...options, currenOption]);
+      setOptions((prevOptions) => [...prevOptions, currenOption]);
       setCurrentOption("");
     }
   };
 
   // Función para manejar la creación de la votación
   const createVoting = async () => {
-    if (votingName && options.length > 0) {
-      const result = await backend.createPoll(votingName, options);
+    if (votingName && options?.length > 0) {
+      const result = await backend?.createPoll(votingName, options);
       setVotingName("");
       setOptions([]);
       console.log(result);
@@ -80,9 +78,9 @@ const NewVoting = () => {
               </div>
             </FormGroup>
 
-            {options.length > 0 && (
+            {options?.length > 0 && (
               <ListGroup className="mb-3">
-                {options.map((opcion, index) => (
+                {options?.map((opcion, index) => (
                   <ListGroupItem key={index}>{opcion}</ListGroupItem>
                 ))}
               </ListGroup>
@@ -91,7 +89,7 @@ const NewVoting = () => {
             <Button
               type="submit"
               color="success"
-              disabled={!votingName || options.length === 0}
+              disabled={!votingName || options?.length === 0}
               onClick={createVoting}
             >
               Crear Votación
