@@ -5,9 +5,10 @@ import {
 } from "react-router-dom";
 import AuthRoutes from "./AuthRoutes";
 import Login from "../pages/home/App";
-import NewVoting from "../pages/newVoting/NewVoting";
+import NewVoting from "../pages/admin/NewVoting";
 import SessionLayout from "../components/SessionLayout/SessionLayout";
-import VotingHome from "../pages/votingHome/VotingHome";
+import VotingHome from "../pages/admin/VotingHome";
+import { VotingProvider } from "../context/VotingContext";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,9 @@ const router = createBrowserRouter([
     path: "/admin",
     element: (
       <AuthRoutes>
-        <SessionLayout />
+        <VotingProvider>
+          <SessionLayout />
+        </VotingProvider>
       </AuthRoutes>
     ),
     children: [

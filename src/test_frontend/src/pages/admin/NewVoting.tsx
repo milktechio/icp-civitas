@@ -7,24 +7,19 @@ import {
   ListGroup,
   ListGroupItem,
 } from "reactstrap";
-import { canisterId, createActor } from "../../../../declarations/test_backend";
 import { useAuthContext } from "../../context/hooks/useAuthContext";
 import { useState } from "react";
 import "../../index.scss";
+import { useVotingContext } from "../../context/hooks/useVotingContext";
 
 const NewVoting = () => {
   const [votingName, setVotingName] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
   const [currenOption, setCurrentOption] = useState<string>("");
+
   const auth = useAuthContext();
+  const voting = useVotingContext();
 
-  let backend = createActor(canisterId, {
-    agentOptions: {
-      host: "http://localhost:4943/",
-    },
-  });
-
-  // Función para agregar una opción a la lista de opciones
   const addOption = () => {
     if (currenOption.trim()) {
       setOptions((prevOptions) => [...prevOptions, currenOption]);
@@ -32,13 +27,11 @@ const NewVoting = () => {
     }
   };
 
-  // Función para manejar la creación de la votación
   const createVoting = async () => {
     if (votingName && options?.length > 0) {
-      const result = await backend?.createPoll(votingName, options);
+      const newPoll = await voting?.registerPollHandler(votingName, options);
       setVotingName("");
       setOptions([]);
-      console.log(result);
     }
   };
 
