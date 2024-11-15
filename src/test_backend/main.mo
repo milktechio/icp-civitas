@@ -12,7 +12,7 @@ actor Main {
    stable let whitelist = SHM.init<Principal,User.User>();
    stable let polls = SB.init<Poll.Poll>();
 
-   let owner : Principal = Principal.fromText("otpyl-647cy-xr3ji-3bjmd-zs5h3-iu4so-jfu4b-cbjtl-bipcl-xdu7h-2ae");
+   let owner : Principal = Principal.fromText("icbe6-fncid-t7cy2-wyqgx-w2jhu-3wgpt-x3n5x-5rhtj-czgbg-latkm-mae");
   
    let whitelistOps = Whitelist.Whitelist(whitelist);
    let pollOps = Poll.PollOps(polls);
@@ -68,11 +68,8 @@ actor Main {
       };
    };
 
-   public shared (msg) func removePoll(id : Nat) : async ?Polls.SharedPoll{
-      if(msg.caller == owner){
-         return ?pollOps.removePoll(id);
-      };
-      return null;
+   public  func removePoll(id : Nat) : async ?Polls.SharedPoll{
+      return ?pollOps.removePoll(id);
    };
 
     public shared (msg) func renamePoll(id : Nat, new_name : Text) : async ?Polls.SharedPoll{

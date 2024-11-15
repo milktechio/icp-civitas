@@ -41,14 +41,16 @@ const VotingHome = () => {
                         <label>
                           Votos totales: {String(poll?.votes[index])}
                         </label>
-                        {auth?.isAdmin && (
-                          <Button onClick={() => voting?.removePoll(poll?.id)}>
-                            Eliminar votacion
-                          </Button>
-                        )}
                       </li>
                     ))}
                   </ul>
+                  {auth?.isAdmin && (
+                    <Button
+                      onClick={async () => await voting?.removePoll(poll?.id)}
+                    >
+                      Eliminar votacion
+                    </Button>
+                  )}
                 </>
               )}
               {poll.votes.includes(1n) && (

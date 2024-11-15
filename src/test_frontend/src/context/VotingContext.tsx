@@ -64,8 +64,10 @@ export const VotingProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const removePoll = async (idPoll: bigint) => {
-    await backend.removePoll(idPoll);
-    fetchVotaciones();
+    setLoading(true);
+    
+    await backend?.removePoll(idPoll);
+    setLoading(false);
   };
 
   useEffect(() => {
