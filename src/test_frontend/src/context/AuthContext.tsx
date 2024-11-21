@@ -15,7 +15,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 const adminPrincipals = [
   "icbe6-fncid-t7cy2-wyqgx-w2jhu-3wgpt-x3n5x-5rhtj-czgbg-latkm-mae", // Ejemplo de Principal de admin 1
-  "qo2sj-nyaaa-aaaaa-aaaaq-cai", // Ejemplo de Principal de admin 2
+  "vqejn-4rtlg-lqnwy-rrg7h-qx5kz-xp4st-z7ldj-ougum-a4fxs-w53i3-hqe", // Ejemplo de Principal de admin 2
 ];
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -49,8 +49,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (await authClient.isAuthenticated()) {
       const identity = await authClient.getIdentity();
       const principalId = await identity.getPrincipal().toText();
-
-      console.log(principalId);
 
       if (!identity.getPrincipal().isAnonymous()) {
         setIsAuthenticated(true);

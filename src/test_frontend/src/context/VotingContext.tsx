@@ -30,9 +30,11 @@ export const VotingProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const isLocalEnv = window.location.hostname === "localhost";
+
   let backend = createActor(canisterId, {
     agentOptions: {
-      host: "http://localhost:4943/",
+      host: isLocalEnv ? "http://localhost:4943/" : "https://ic0.app/",
     },
   });
 
@@ -45,8 +47,8 @@ export const VotingProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchVotaciones = async () => {
     try {
       const response = await backend.getPolls();
-      console.log(response);
       setPoll(response?.elems);
+      console.log(response.elems);
     } catch (err) {
       setError("Hubo un problema al cargar las votaciones");
     }
@@ -65,7 +67,7 @@ export const VotingProvider = ({ children }: { children: React.ReactNode }) => {
 
   const removePoll = async (idPoll: bigint) => {
     setLoading(true);
-    
+
     await backend?.removePoll(idPoll);
     setLoading(false);
   };
