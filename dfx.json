@@ -1,37 +1,27 @@
 {
+  "$schema": "https://internetcomputer.org/assets/files/dfx-json-schema-a832089d6c4e4ae8a9b67014e1e08fd9.json",
   "canisters": {
-    "test_backend": {
-      "main": "src/test_backend/main.mo",
+    "app": {
+      "dependencies": ["backend"],
+      "declarations": {
+        "output": "declarations/app"
+      },
+      "frontend": {
+        "entrypoint": "dist/index.html"
+      },
+      "source": ["dist"],
+      "build": ["pnpm i", "pnpm build"],
+      "type": "assets"
+    },
+    "backend": {
+      "declarations": {
+        "node_compatibility": false,
+        "output": "declarations/backend"
+      },
+      "main": "backend/main.mo",
       "type": "motoko"
-    },
-    "test_frontend": {
-      "dependencies": [
-        "test_backend"
-      ],
-      "source": [
-        "src/test_frontend/dist"
-      ],
-      "type": "assets",
-      "workspace": "test_frontend"
-    },
-    "internet_identity": {
-      "type": "custom",
-      "candid": "https://github.com/dfinity/internet-identity/releases/download/release-2024-11-01/internet_identity.did",
-      "wasm": "https://github.com/dfinity/internet-identity/releases/download/release-2024-11-01/internet_identity_dev.wasm.gz",
-      "init_arg": "(opt record { captcha_config = opt record { max_unsolved_captchas= 50:nat64; captcha_trigger = variant {Static = variant {CaptchaDisabled}}}})",
-      "remote": {
-        "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
-        }
-      }
-    }
-  },
-  "defaults": {
-    "build": {
-      "args": "",
-      "packtool": ""
     }
   },
   "output_env_file": ".env",
-  "version": 1
+  "version": 2
 }
