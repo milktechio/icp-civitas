@@ -41,6 +41,7 @@ pnpm dev
 To deploy the canisters, run the following commands:
 
 ```bash
+dfx build --check # Check that builds work correctly and prepare app
 dfx generate # Generate app
 dfx deploy --network ic # Deploy to IC network
 # Or dfx deploy --playground to run in playground mode
