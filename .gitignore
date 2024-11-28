@@ -1,25 +1,35 @@
-# Various IDEs and Editors
-.vscode/
-.idea/
-**/*~
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
 
-# Mac OSX temporary files
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
 .DS_Store
-**/.DS_Store
+*.zip
+.fleet
+.idea
 
-# dfx temporary files
-.dfx/
-
-# generated files
-**/declarations/
-
-# rust
-target/
-
-# frontend code
-node_modules/
-dist/
-.svelte-kit/
-
-# environment variables
+# Local env files
+*.local
 .env
+.env.*
+!.env.example
+
+# Temp public files
+public/_temp
+
+# Canisters
+declarations
+.dfx
+.vessel
+.mops

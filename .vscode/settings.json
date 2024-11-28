@@ -1,0 +1,42 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "eslint.useFlatConfig": true,
+  // Hide infrequent directories
+  "files.exclude": {
+    "node_modules": true,
+    "deploy": true,
+    "scripts": true,
+    "tmp": true,
+    "dist": true,
+    "declarations": false,
+    ".dfx": true
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#1f8f4a",
+    "activityBar.background": "#1f8f4a",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#5f28b7",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#1f8f4a",
+    "statusBar.background": "#166534",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#1f8f4a",
+    "statusBarItem.remoteBackground": "#166534",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#166534",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#16653499",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#166534"
+  // "tailwindCSS.experimental.classRegex": [
+  //   [
+  //     "tv\\((([^()]*|\\([^()]*\\))*)\\)",
+  //     "[\"'`]([^\"'`]*).*?[\"'`]"
+  //   ]
+  // ]
+}
