@@ -2,7 +2,6 @@ import Principal "mo:base/Principal";
 import SHM "libs/FunctionalStableHashMap";
 import SB "libs/StableBuffer";
 import Text "mo:base/Text";
-import Blob "mo:base/Blob";
 import Poll "polls";
 import Whitelist "whitelist";
 import User "User";
